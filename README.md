@@ -15,3 +15,22 @@ Collecteur RSS auto-hébergé sur Raspberry Pi.
 - SQLite
 - Docker
 - FastAPI
+
+## Collecteur RSS
+
+Les flux à collecter sont définis dans `feeds.yaml`:
+
+```yaml
+feeds:
+  - name: Python Insider
+    url: https://blog.python.org/feeds/posts/default
+```
+
+Lancer la collecte:
+
+```bash
+python3 src/collector.py
+```
+
+Par défaut, la base SQLite est créée dans `data/rss_lab.sqlite3`. Les doublons sont
+évités avec une contrainte unique sur l'URL de l'article.

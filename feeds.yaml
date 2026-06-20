@@ -1,0 +1,55 @@
+feeds:
+  - name: OpenAI News
+    url: https://openai.com/news/rss.xml
+  - name: Google AI Blog
+    url: https://blog.google/technology/ai/rss/
+  - name: Google DeepMind Blog
+    url: https://deepmind.google/blog/rss.xml
+  - name: MIT News - Artificial Intelligence
+    url: https://news.mit.edu/topic/mitartificial-intelligence2-rss.xml
+  - name: Hugging Face Blog
+    url: https://huggingface.co/blog/feed.xml
+  - name: Microsoft AI Blog
+    url: https://news.microsoft.com/source/topics/ai/feed/
+  - name: AWS Machine Learning Blog
+    url: https://aws.amazon.com/blogs/machine-learning/feed/
+  - name: Berkeley AI Research
+    url: https://bair.berkeley.edu/blog/feed.xml
+  - name: The Gradient
+    url: https://thegradient.pub/rss/
+  - name: VentureBeat AI
+    url: https://venturebeat.com/category/ai/feed/
+  - name: NVIDIA AI
+    url: https://blogs.nvidia.com/blog/category/deep-learning/feed/
+  - name: Import AI
+    url: https://jack-clark.net/feed/
+  - name: Stanford AI Lab Blog
+    url: https://ai.stanford.edu/blog/feed.xml
+  - name: Google Research Blog
+    url: https://research.google/blog/rss/
+  - name: Lil'Log
+    url: https://lilianweng.github.io/index.xml
+  - name: Latent Space
+    url: https://www.latent.space/feed
+  - name: Sebastian Raschka
+    url: https://sebastianraschka.com/rss_feed.xml
+  - name: Machine Learning Mastery
+    url: https://machinelearningmastery.com/feed/
+  - name: MarkTechPost AI
+    url: https://www.marktechpost.com/category/artificial-intelligence/feed/
+  - name: Synced Review
+    url: https://syncedreview.com/feed/
+  - name: Distill
+    url: https://distill.pub/rss.xml
+  - name: ML Safety Newsletter
+    url: https://newsletter.safe.ai/feed
+  - name: O'Reilly AI & ML
+    url: https://www.oreilly.com/radar/topics/ai-ml/feed/index.xml
+  - name: arXiv - Artificial Intelligence
+    url: https://rss.arxiv.org/rss/cs.AI
+  - name: arXiv - Machine Learning
+    url: https://export.arxiv.org/api/query?search_query=cat:cs.LG&sortBy=submittedDate&sortOrder=descending&max_results=50
+  - name: arXiv - Computation and Language
+    url: https://rss.arxiv.org/rss/cs.CL
+  - name: arXiv - Statistics Machine Learning
+    url: https://export.arxiv.org/api/query?search_query=cat:stat.ML&sortBy=submittedDate&sortOrder=descending&max_results=50
