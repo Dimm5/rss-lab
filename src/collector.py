@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import html
+import signal
 import sqlite3
 import sys
 from dataclasses import dataclass
@@ -21,6 +23,7 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_FEEDS_PATH = ROOT_DIR / "feeds.yaml"
 DEFAULT_DB_PATH = ROOT_DIR / "data" / "rss_lab.sqlite3"
 USER_AGENT = "rss-lab/0.1 (+https://localhost)"
+FEED_TIMEOUT_SECONDS = 20
 
 
 @dataclass(frozen=True)
@@ -174,8 +177,9 @@ def fetch_feed(feed: Feed) -> bytes:
     """Télécharge le XML d'un flux RSS ou Atom."""
 
     request = Request(feed.url, headers={"User-Agent": USER_AGENT})
-    with urlopen(request, timeout=20) as response:
-        return response.read()
+    with per_feed_timeout(FEED_TIMEOUT_SECONDS):
+        with urlopen(request, timeout=FEED_TIMEOUT_SECONDS) as response:
+            return response.read()
 
 
 def parse_feed(feed: Feed, xml_content: bytes) -> list[Article]:
@@ -372,6 +376,28 @@ def save_articles(connection: sqlite3.Connection, articles: Iterable[Article]) -
     return inserted
 
 
+@contextlib.contextmanager
+def per_feed_timeout(seconds: int):
+    """Interrompt un téléchargement trop long sur les systèmes compatibles POSIX."""
+
+    if seconds <= 0 or not hasattr(signal, "SIGALRM"):
+        yield
+        return
+
+    previous_handler = signal.getsignal(signal.SIGALRM)
+
+    def timeout_handler(signum, frame):  # noqa: ARG001
+        raise TimeoutError(f"Délai dépassé après {seconds} secondes")
+
+    signal.signal(signal.SIGALRM, timeout_handler)
+    signal.setitimer(signal.ITIMER_REAL, seconds)
+    try:
+        yield
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0)
+        signal.signal(signal.SIGALRM, previous_handler)
+
+
 def collect(feeds_path: Path, db_path: Path) -> int:
     """Orchestre la collecte complète et retourne le nombre d'articles ajoutés."""
 
@@ -401,7 +427,13 @@ def main() -> int:
     """Point d'entrée du script."""
 
     args = parse_args()
-    total_inserted = collect(args.feeds, args.db)
+
+    try:
+        total_inserted = collect(args.feeds, args.db)
+    except KeyboardInterrupt:
+        print("[ERREUR] Collecte interrompue par l'utilisateur.", file=sys.stderr)
+        return 130
+
     print(f"Collecte terminée: {total_inserted} nouvel article ajouté.")
     return 0
 
