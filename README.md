@@ -16,6 +16,16 @@ Collecteur RSS auto-hébergé sur Raspberry Pi.
 - Docker
 - FastAPI
 
+## Scoring Hermes
+
+Le score d'analyse RSS est exprimé sur une échelle de 0 à 100, puis arrondi à l'entier le plus proche avant stockage.
+
+Repères actuels:
+- 50: score moyen pour un signal ordinaire
+- 80+: annonces importantes
+- 90+: annonces majeures ou ruptures fortes
+- 30 à 55: plage habituelle pour une simple annonce de version corrective
+
 ## Collecteur RSS
 
 Les flux à collecter sont définis dans `feeds.yaml`:
