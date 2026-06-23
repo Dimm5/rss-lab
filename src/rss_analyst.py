@@ -23,9 +23,14 @@ from db import (
 from prompts import build_rss_analyst_prompt
 
 AGENT_NAME = "rss_analyst"
-HERMES_COMMAND = os.environ.get("HERMES_COMMAND", "hermes")
 DEFAULT_LIMIT = 20
 HERMES_TIMEOUT_SECONDS = int(os.environ.get("RSS_LAB_HERMES_TIMEOUT", "300"))
+
+
+def get_hermes_bin() -> str:
+    """Return the Hermes executable path used by cron and local runs."""
+
+    return os.environ.get("HERMES_BIN") or "/home/dimitri/.local/bin/hermes"
 
 
 def parse_args() -> argparse.Namespace:
@@ -63,7 +68,7 @@ def run_hermes(prompt: str) -> str:
     """Execute Hermes in non-interactive mode and return its output."""
 
     command = [
-        HERMES_COMMAND,
+        get_hermes_bin(),
         "chat",
         "--quiet",
         "--ignore-rules",
